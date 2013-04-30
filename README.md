@@ -65,7 +65,7 @@ The constructor takes an options argument:
         <td>13 bits (*8192)</td>
     </tr>
     <tr>
-        <td>Process ID</td>
+        <td>Process ID / unique</td>
         <td>10 bits (*1024)</td>
     </tr>
 </table>
@@ -92,12 +92,24 @@ Due to javascript's 53-bit integer limit, the ID is split in two parts, time-cou
         <td>23 bits (*8388608)</td>
     </tr>
     <tr>
-        <td>Random seed</td>
+        <td>Random / unique</td>
         <td>20 bits (*1048576)</td>
     </tr>
 </table>
 
  `.bigflake` can generate a total of `79,228,162,514,264,337,593,543,950,336` values.
+
+Sharding
+--------
+
+Set the `unique` option to the shard's ID. `.flake` can have up to 1024 shards. If needed, the value can be extracted from the ID by reading the last 10 bits, e.g.:
+
+    var id = unik.flake()
+    var shard_id = parseInt(id.split('-')[1], 36) // assuming base 36 and '-' separator
+
+    shard_id = parseInt(shard_id.toString(2).slice(-10), 2)
+
+For `.bigflake` use the `seed` option, up to 1048576 shards.
 
 Performance and collisions
 --------------------------
