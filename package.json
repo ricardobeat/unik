@@ -1,0 +1,29 @@
+{
+  "name": "unik",
+  "description": "Generate sortable unique IDs",
+  "version": "0.1.0",
+  "main": "index.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "test": "node test/sharding.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ricardobeat/unik.git"
+  },
+  "keywords": [
+    "keys",
+    "uuid",
+    "guid",
+    "uid",
+    "shard",
+    "sortable",
+    "database",
+    "db"
+  ],
+  "author": "Ricardo Tomasi",
+  "license": "MIT"
+}
