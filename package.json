@@ -1,7 +1,7 @@
 {
   "name": "unik",
   "description": "Generate sortable unique IDs",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "main": "index.js",
   "dependencies": {
   },
@@ -24,6 +24,6 @@
     "database",
     "db"
   ],
-  "author": "Ricardo Tomasi",
+  "authors": "Ricardo Tomasi, Andrew Sengul",
   "license": "MIT"
 }
