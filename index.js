@@ -24,12 +24,36 @@ function Unik (options) {
     this.seed    = options && options.seeed || Math.floor(Math.random() * Math.pow(2, 20))
     this.maxTime = 0
     this.counter = 0
+    this.reverse = options && options.reverse || false
     this.unique  = process.pid
     this.append  = null
 }
 
 Unik.create = function (options) {
     return new Unik(options)
+}
+
+Number.prototype.toBase = function (base) {
+
+    var decimal = this
+      , conversion = ""
+      , symbols = [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f','g','h','i','j','k','l', 'm','n','o','p','q','r','s','t','u','v','w','x','y','z', 'A','B','C','D','E','F','G','H','I','J','K','L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+
+    if (base > symbols.length) {
+        return false
+    }
+
+    else if (base < 33) {
+        return decimal.toString(base)
+    }
+
+    else {
+        while (decimal >= 1) {
+            conversion = symbols[(decimal - (base*Math.floor(decimal / base)))] + conversion
+            decimal = Math.floor(decimal / base)
+        }
+        return conversion
+    }
 }
 
 // flake
@@ -68,7 +92,8 @@ Unik.prototype.flake = function () {
     now = parseInt(fillRight(now.toString(2), 41), 2)
     sequence = (++this.counter) << 10 | this.unique % 1024
 
-    id = now.toString(base) + this.sep + sequence.toString(base)
+    // if the 'reverse' option is toggled, the sequence goes before the base
+    id = (!this.reverse) ? now.toBase(base) + this.sep + sequence.toBase(base) : sequence.toBase(base) + this.sep + now.toBase(base)
     if (this.append) id += this.sep + this.append
 
     return id
@@ -106,7 +131,7 @@ Unik.prototype.bigflake = function () {
     // bitwise operations max at 32 bits, so concat bits by hand
     sequence = parseInt(ns.toString(2) + this.seed.toString(2), 2)
 
-    id = now.toString(base) + this.sep + sequence.toString(base)
+    id = (!this.reverse) ? now.toBase(base) + this.sep + sequence.toBase(base) :  sequence.toBase(base) + this.sep + now.toBase(base)
     if (this.append) id += this.sep + this.append
 
     return id
