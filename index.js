@@ -24,6 +24,7 @@ function Unik (options) {
     this.seed    = options && options.seeed || Math.floor(Math.random() * Math.pow(2, 20))
     this.maxTime = 0
     this.counter = 0
+    this.digitSymbols = options && options.digitSymbols || ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
     this.reverse = options && options.reverse || false
     this.unique  = process.pid
     this.append  = null
@@ -33,17 +34,16 @@ Unik.create = function (options) {
     return new Unik(options)
 }
 
-Number.prototype.toBase = function (base) {
+Number.prototype.toBase = function (base, symbols) {
 
     var decimal = this
       , conversion = ""
-      , symbols = [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f','g','h','i','j','k','l', 'm','n','o','p','q','r','s','t','u','v','w','x','y','z', 'A','B','C','D','E','F','G','H','I','J','K','L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 
     if (base > symbols.length) {
         return false
     }
 
-    else if (base < 33) {
+    else if (base < 37) {
         return decimal.toString(base)
     }
 
@@ -68,6 +68,7 @@ Number.prototype.toBase = function (base) {
 Unik.prototype.flake = function () {
     var now  = Date.now() - this.epoch
       , base = this.base
+      , symbols = this.digitSymbols
       , max  = this.maxTime
       , sequence, id
 
@@ -93,7 +94,7 @@ Unik.prototype.flake = function () {
     sequence = (++this.counter) << 10 | this.unique % 1024
 
     // if the 'reverse' option is toggled, the sequence goes before the base
-    id = (!this.reverse) ? now.toBase(base) + this.sep + sequence.toBase(base) : sequence.toBase(base) + this.sep + now.toBase(base)
+    id = (!this.reverse) ? now.toBase(base, symbols) + this.sep + sequence.toBase(base, symbols) : sequence.toBase(base, symbols) + this.sep + now.toBase(base, symbols)
     if (this.append) id += this.sep + this.append
 
     return id
@@ -111,6 +112,7 @@ Unik.prototype.flake = function () {
 Unik.prototype.bigflake = function () {
     var now  = Date.now()
       , base = this.base
+      , symbols = this.digitSymbols
       , max  = this.maxTime
       , ns, id
 
@@ -131,7 +133,7 @@ Unik.prototype.bigflake = function () {
     // bitwise operations max at 32 bits, so concat bits by hand
     sequence = parseInt(ns.toString(2) + this.seed.toString(2), 2)
 
-    id = (!this.reverse) ? now.toBase(base) + this.sep + sequence.toBase(base) :  sequence.toBase(base) + this.sep + now.toBase(base)
+    id = (!this.reverse) ? now.toBase(base, symbols) + this.sep + sequence.toBase(base, symbols) : sequence.toBase(base, symbols) + this.sep + now.toBase(base, symbols)
     if (this.append) id += this.sep + this.append
 
     return id
