@@ -21,7 +21,7 @@ function Unik (options) {
     this.epoch   = options && options.epoch || Date.parse('2012')
     this.base    = options && options.base || 36
     this.sep     = options && options.sep != null ? options.sep : '-'
-    this.seed    = options && options.seeed || Math.floor(Math.random() * Math.pow(2, 20))
+    this.seed    = options && options.seed || Math.floor(Math.random() * Math.pow(2, 20))
     this.maxTime = 0
     this.counter = 0
     this.unique  = process.pid
