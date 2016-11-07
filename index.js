@@ -84,7 +84,7 @@ Unik.prototype.flake = function () {
 //                  96 bits     79,228,162,514,264,337,593,543,950,336
 
 Unik.prototype.bigflake = function () {
-    var now  = Date.now()
+    var now  = Date.now() - this.epoch
       , base = this.base
       , max  = this.maxTime
       , ns, id
