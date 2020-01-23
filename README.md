@@ -15,8 +15,8 @@ Make sure you specify the unik version in your `package.json`.
 Usage
 -----
 
-    var Unik = require('unik')
-       , db  = require('mydb')
+    var Unik = require('unik'),
+         db  = require('mydb')
 
     var unik = new Unik()
 
